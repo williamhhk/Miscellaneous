@@ -1,0 +1,16 @@
+public static bool IsInjectingToRepositoryDataSourceOfNamespace(
+         this IRequest request, string entityNamespace)
+{
+    if(request.ParentRequest.Service.GetGenericTypeDefinition() == 
+         typeof(IRepositoryDataSource<>))
+    {
+        return request.ParentRequest.Service.GetGenericArguments().First().Namespace 
+             == entityNamespace;
+    }
+
+    return false;
+}
+
+Bind<DbContext>().To<Data1Context>().When(t => t.IsInjectingToRepositoryDataSourceOfNamespace("MyApp.Data1"));
+
+Bind<DbContext>().To<Data2Context>().When(t => t.IsInjectingToRepositoryDataSourceOfNamespace("MyApp.Data2"));
