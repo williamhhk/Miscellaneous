@@ -1,0 +1,46 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BitwiseDemo
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine(TestOne());
+            Console.ReadLine();
+        }
+
+        public static string  TestOne()
+        {
+            return Log(() =>
+            {
+                Console.WriteLine("This is a test");
+                return "Result......";
+            }
+            );
+        }
+
+        protected static string Log(Func<string> function)
+        {
+            string response = string.Empty;
+
+            try
+            {
+                Console.WriteLine("Invoking funciton ");
+                response = function.Invoke();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error ");
+                response = ex.Message;
+            }
+
+            return response;
+        }
+
+    }
+}
