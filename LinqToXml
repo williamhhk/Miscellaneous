@@ -1,0 +1,17 @@
+var numbers = Enumerable.Range(1,10);
+IEnumerable<XElement> xml2 =
+    numbers.SelectMany(number => new[]
+	{
+		new XElement("variable",	
+			new XAttribute("name", $"OSDAppn{number}Description"),	
+			new XAttribute("property", $"AppInfo{number}Description"), 	
+			number)	,
+		new XElement("variable",	
+			new XAttribute("name", $"OSDApp{number}DisplayName"),	
+			new XAttribute("property", $"AppInfo{number}DisplayName"), 	
+			number)	,
+		new XElement("variable",	
+			new XAttribute("name", $"OSDApp{number}Name"),	
+			new XAttribute("property", $"AppInfo{number}Name")
+			)			
+	});
