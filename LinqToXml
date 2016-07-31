@@ -12,7 +12,7 @@ namespace ConsoleApplication1
         static void Main(string[] args)
         {
             var numbers = Enumerable.Range(1, 10);
-            IEnumerable<XElement> xml2 =
+            var xml2 =
                 numbers.SelectMany(number => new[]
                 {
                     new XElement("variable",
@@ -26,13 +26,19 @@ namespace ConsoleApplication1
                     new XElement("variable",
                     new XAttribute("name", $"OSDApp{number}Name"),
                     new XAttribute("property", $"AppInfo{number}Name"))
-                });
-            var test = string.Empty;
-            foreach (var element in xml2)
-            {
-                test += element.ToString();
-                Console.WriteLine( string.Concat(element.ToString()));
-            }
+                }).Aggregate(new StringBuilder(), (c, n) =>
+                     c.Append(n.ToString())
+                )
+                ;
+
+            //var test = string.Empty;
+            //foreach (var element in xml2)
+            //{
+            //    test += element.ToString();
+            //    Console.WriteLine( string.Concat(element.ToString()));
+            //}
+
+            var test = xml2.ToString();
         }
     }
 }
