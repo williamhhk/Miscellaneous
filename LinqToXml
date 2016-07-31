@@ -12,23 +12,29 @@ namespace ConsoleApplication1
         static void Main(string[] args)
         {
             var numbers = Enumerable.Range(1, 10);
-            var xml2 =
-                numbers.SelectMany(number => new[]
+            int index =-1;
+            string xml2 =
+                numbers.SelectMany((number) =>
                 {
+                    index++;
+                    return new[]
+                    {
                     new XElement("variable",
-                    new XAttribute("name", $"OSDAppn{number}Description"),
-                    new XAttribute("property", $"AppInfo{number}Description"),
+                    new XAttribute("name", $"OSDAppn{index}Description"),
+                    new XAttribute("property", $"AppInfo{index}Description"),
                     number) ,
                     new XElement("variable",
-                    new XAttribute("name", $"OSDApp{number}DisplayName"),
-                    new XAttribute("property", $"AppInfo{number}DisplayName"),
+                    new XAttribute("name", $"OSDApp{index}DisplayName"),
+                    new XAttribute("property", $"AppInfo{index}DisplayName"),
                     number) ,
                     new XElement("variable",
-                    new XAttribute("name", $"OSDApp{number}Name"),
-                    new XAttribute("property", $"AppInfo{number}Name"))
-                }).Aggregate(new StringBuilder(), (c, n) =>
+                    new XAttribute("name", $"OSDApp{index}Name"),
+                    new XAttribute("property", $"AppInfo{index}Name"))
+                    };
+                }
+                ).Aggregate(new StringBuilder(), (c, n) =>
                      c.Append(n.ToString())
-                )
+                ).ToString()
                 ;
 
             //var test = string.Empty;
