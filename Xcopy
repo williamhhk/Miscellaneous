@@ -1,0 +1,7 @@
+xcopy "C:\Important Files" D:\Backup /c /d /e /h /i /k /q /r /s /x /y
+
+In this example, the xcopy command is designed to function as a backup solution. Try this if you would like to use xcopy to backup your files instead of a backup software program. Put the xcopy command as shown above in a script and schedule it to run nightly.
+
+As shown above, the xcopy command is used to copy all the files and folders [/s] newer than those already copied [/d], including empty folders [/e] and hidden files [/h], from source of C:\Important Files to the destination of D:\Backup, which is a directory [/i]. I have some read-only files I want to keep updated in destination [/r] and I want to keep that attribute after being copied [/k]. I also want to make sure I maintain any ownership and audit settings in the files I'm copying [/x]. Finally, since I'm running xcopy in a script, I don't need to see any information about the files as they're copied [/q], I don't want to prompted to overwrite each one [/y], nor do I want xcopy to stop if it runs into an error [/c].
+
+http://pcsupport.about.com/od/commandlinereference/p/xcopy-command.htm
