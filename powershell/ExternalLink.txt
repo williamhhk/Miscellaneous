@@ -1,0 +1,2 @@
+More on Get-Counter
+https://www.simple-talk.com/sysadmin/powershell/powershell-day-to-day-admin-tasks-monitoring-performance/
