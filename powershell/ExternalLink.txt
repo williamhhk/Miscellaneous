@@ -1,2 +1,24 @@
 More on Get-Counter
 https://www.simple-talk.com/sysadmin/powershell/powershell-day-to-day-admin-tasks-monitoring-performance/
+
+#Process, Memory use by a process
+$ProcessName = "AnyName"
+#Get-Counter -ListSet * | Sort-Object CounterSetName | Format-Table CounterSetName
+#Get-Counter -ListSet Process
+(Get-Counter -ListSet Process).Counter
+(Get-Counter “\Process($ProcessName)\*").CounterSamples
+
+(Get-Counter “\Process($ProcessName)\ID Process").CounterSamples.CookedValue
+(Get-Counter “\Process($ProcessName)\Working Set")
+(Get-Counter “\Process($ProcessName)\Working Set Peak")
+(Get-Counter “\Process($ProcessName)\Virtual Bytes")
+(Get-Counter “\Process($ProcessName)\Virtual Bytes Peak")
+(Get-Counter “\Process($ProcessName)\Page File Bytes")
+(Get-Counter “\Process($ProcessName)\Page File Bytes Peak")
+(Get-Counter “\Process($ProcessName)\Virtual Bytes")
+(Get-Counter “\Process($ProcessName)\Virtual Bytes")
+(Get-Counter “\Process($ProcessName)\Virtual Bytes")
+(Get-Counter “\Process($ProcessName)\Virtual Bytes")
+(Get-Counter “\Process($ProcessName)\Virtual Bytes")
+(Get-Counter “\Process($ProcessName)\Virtual Bytes")
+(Get-Counter “\Process($ProcessName)\Thread Count")
