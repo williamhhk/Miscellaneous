@@ -2,3 +2,25 @@ $ProcessName = "firefox
 $CpuCores = (Get-WMIObject Win32_ComputerSystem).NumberOfLogicalProcessors
 $Samples = (Get-Counter “\Process($Processname*)\% Processor Time”).CounterSamples
 $Samples | Select `InstanceName, @{Name=”CPU %”;Expression={[Decimal]::Round(($_.CookedValue / $CpuCores), 2)}}
+
+
+$taskSnapshot =  gwmi -class win32_process | Where-Object {$_.ProcessName -eq 'firefox.exe'}
+foreach ($task in $taskSnapshot){
+    $task.GetOwner().User
+}
+$taskList = @()
+foreach ($task in $taskSnapshot){
+    
+
+    $taskProps = @{
+        'Handles'=$task.Handles
+        'Name'=$task.Name
+        'PID'=$task.Id
+        'UserId' = $task.GetOwner().User
+        'PercentCpu' = (Get-Counter “\Process($Processname*)\% Processor Time”).CounterSamples.CookedValue[0] / $CpuCores
+    }
+    $taskObject = New-Object -TypeName PSObject -Property $taskProps
+    $taskList += $taskObject
+}
+
+$taskList | Out-GridView
