@@ -23,3 +23,37 @@ $ProcessName = "AnyName"
 (Get-Counter “\Process($ProcessName)\Virtual Bytes")
 (Get-Counter “\Process($ProcessName)\Virtual Bytes")
 (Get-Counter “\Process($ProcessName)\Thread Count")
+
+#-------------------
+
+$server = "anypc"
+$PSView = @(
+    'IDProcess',
+    'HandleCount',
+    'ThreadCount'
+    'PercentProcessorTime',
+    @{Label="NPM(K)";Expression={[int]($_.PoolNonpagedBytes/1024)}},
+    @{Label="PM(K)";Expression={[int]($_.PageFileBytes/1024)}},
+    @{Label="WS(K)";Expression={[int]($_.WorkingSet/1024)}}
+   'UserName',
+   'Name',
+   'CPU'
+    )
+$Processes = Gwmi -ComputerName $server Win32_PerfFormattedData_PerfProc_Process `
+        | where {$_.Name -like 'firefox*'} `
+        | % { $_  `
+            | Add-Member -MemberType ScriptProperty -Name UserName -Value {
+                $o = (Get-WmiObject -ComputerName $server -Query "Select * FROM Win32_Process WHERE ProcessId = $($this.IDProcess)").GetOwner()
+                '{0}\{1}' -f $o.Domain,$o.User 
+                } -Force -PassThru `
+            | Add-Member -MemberType ScriptProperty -Name CPU -Value {
+                
+                $ProcessName = (Get-Process -ComputerName $server -Id $($this.IDProcess)).Name
+#                $ProcessName = "firefox"
+                $o = (Get-Counter -ComputerName $server “\Process($ProcessName)\% Processor Time”).CounterSamples.CookedValue[0] / 8
+                '{0}' -f $o
+                } -Force -PassThru
+    
+            } | ft $PSView -AutoSize
+
+$Processes
