@@ -1,0 +1,65 @@
+        private static void CreateLowProcess(string commandline)
+        {
+            IntPtr hNewToken = IntPtr.Zero;
+            IntPtr hToken = IntPtr.Zero;
+            IntPtr pIntegritySid = IntPtr.Zero;
+            if (!NativeMethod.OpenProcessToken(
+                    Process.GetCurrentProcess().Handle,
+                    NativeMethod.TOKEN_DUPLICATE | NativeMethod.TOKEN_ADJUST_DEFAULT | NativeMethod.TOKEN_QUERY | NativeMethod.TOKEN_ASSIGN_PRIMARY,
+                    ref hToken))
+            {
+                return;
+            }
+
+            // Duplicate the primary token of the current process.
+            if (!NativeMethod.DuplicateTokenEx(hToken, 0, IntPtr.Zero,
+                SECURITY_IMPERSONATION_LEVEL.SecurityImpersonation,
+                TOKEN_TYPE.TokenPrimary, ref hNewToken))
+            {
+                return;
+            }
+
+            // Create the low integrity SID.
+            if (!NativeMethod.AllocateAndInitializeSid(
+                ref NativeMethod.SECURITY_MANDATORY_LABEL_AUTHORITY, 1,
+                NativeMethod.SECURITY_MANDATORY_LOW_RID,
+                0, 0, 0, 0, 0, 0, 0, ref pIntegritySid))
+            {
+                return;
+            }
+
+            TOKEN_MANDATORY_LABEL tml;
+            tml.Label.Attributes = 0x00000020;
+            tml.Label.Sid = pIntegritySid;
+            int cbTokenInfo = 0;
+            IntPtr pTokenInfo = IntPtr.Zero;
+
+            // Marshal the TOKEN_MANDATORY_LABEL struct to the native memory. 
+            cbTokenInfo = Marshal.SizeOf(tml);
+            pTokenInfo = Marshal.AllocHGlobal(cbTokenInfo);
+            Marshal.StructureToPtr(tml, pTokenInfo, false);
+
+            //Adjust Token privilege
+            if (!NativeMethod.SetTokenInformation(hNewToken,
+                TOKEN_INFORMATION_CLASS.TokenIntegrityLevel,
+                pTokenInfo,
+                cbTokenInfo + NativeMethod.GetLengthSid(pIntegritySid)))
+            {
+                return;
+            }
+
+            STARTUPINFO si = new STARTUPINFO();
+            PROCESS_INFORMATION pi = new PROCESS_INFORMATION();
+            si.cb = Marshal.SizeOf(si);
+            si.lpDesktop = String.Empty;
+
+
+            // Create the new process at the Low integrity level.
+            si.cb = Marshal.SizeOf(si);
+            if (!NativeMethod.CreateProcessAsUser(hNewToken, null, commandline,
+                IntPtr.Zero, IntPtr.Zero, false, 0, IntPtr.Zero, null, ref si,
+                ref pi))
+            {
+                return;
+            }
+        }
