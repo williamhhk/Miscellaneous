@@ -1,0 +1,27 @@
+#jspm
+# javascript package manager for aurelia
+npm install jspm --save
+
+# delete tools
+npm install -g rimraf 
+
+# restore, package.json file should exist.
+npm install 
+
+#github, download github packages
+#download git package
+jspm registry config github
+
+username/password
+
+# populate config.js file
+jspm init 
+
+#Aurelia team recommend Babel or Typescript for the transpiler
+
+#install aurelia-framework  (SRP), granularity give your more option
+
+jspm install aurelia-framework
+
+# to restore 
+jspm install
