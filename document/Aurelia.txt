@@ -25,3 +25,12 @@ jspm install aurelia-framework
 
 # to restore 
 jspm install
+
+
+#Typings 
+
+typings install github:aurelia/task-queue --save
+
+
+#Restore 
+typings install
