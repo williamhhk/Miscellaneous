@@ -1,0 +1,4 @@
+#importing json
+mongoimport --db model --collection restaurants --drop --file restaurants.json
+mongoimport --db model --collection zipcodes --drop --file zips.json
+
