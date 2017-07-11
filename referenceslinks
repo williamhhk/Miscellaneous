@@ -13,3 +13,10 @@ https://coryrylan.com/blog/angular-async-data-binding-with-ng-if-and-ng-else
 Typescript
 
 http://naywinmyint.com/typescript-for-angular-2-part-4/
+
+
+Regex
+
+https://regex101.com
+
+^\D.{3,10}\D$
