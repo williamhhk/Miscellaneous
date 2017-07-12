@@ -23,3 +23,6 @@ Regex
 https://regex101.com
 
 ^\D.{3,10}\D$
+
+HttpClientHander, WebHandler
+https://blogs.msdn.microsoft.com/henrikn/2012/08/07/httpclient-httpclienthandler-and-webrequesthandler-explained/
