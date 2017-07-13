@@ -1,0 +1,1 @@
+netstat -o -n -a | findstr /r /c:".50231
