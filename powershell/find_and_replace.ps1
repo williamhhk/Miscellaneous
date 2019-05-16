@@ -5,5 +5,7 @@ foreach($file in $files){
     $filename = $file.Name
     $filepath = "${path}\${filename}"
     Write-Host $filepath -ForegroundColor Green
+    (Get-Content $filepath -Raw).Replace($oldstr,$newstr) | Set-Content -Path $filepath
+    Write-Host $filepath -ForegroundColor Green
     (Get-Content $filepath | Select-String -SimpleMatch -Pattern  "Logon")
 }
